@@ -1,4 +1,4 @@
-package com.amirhusseinsoori.edge_of_android_technology
+package com.amirhusseinsoori.edge_of_android_technology.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
