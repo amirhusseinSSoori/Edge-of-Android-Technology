@@ -29,9 +29,6 @@ ext {
     //----------------- room -----------------
     room_version = '2.3.0'
 
-    //----------------- navigation -----------------
-    nav_version = '2.3.5'
-
     //----------------- paging -----------------
     paging_version = '3.0.1'
 
@@ -58,6 +55,9 @@ ext {
             preview: "androidx.compose.ui:ui-tooling-preview:$compose_version",
             ui_test : "androidx.compose.ui:ui-test-junit4:$compose_version",
             ui_tooling  : "androidx.compose.ui:ui-tooling:$compose_version",
+
+
+
             // ----------------- accompanist ---------------------------------
             accompanist_insets              : "com.google.accompanist:accompanist-insets:$accompanist_version",
             accompanist_systemuicontroller  : "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version",
@@ -106,9 +106,6 @@ ext {
             roomCoroutines: "androidx.room:room-ktx:$room_version"
     ]
 
-    navigationComponent = [
-
-    ]
 
     paging = [
             paging: "androidx.paging:paging-runtime:$paging_version"
@@ -116,7 +113,7 @@ ext {
 
     coroutines = [
             coroutines    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version",
-            coroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+            core : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     ]
 
     lifecycle = [
@@ -125,7 +122,6 @@ ext {
     ]
 
     utils = [
-
             timber            : "com.jakewharton.timber:timber:$timber_version",
             loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$loggingInterceptor_version",
             multidex          : "androidx.multidex:multidex:$multidex_version",
@@ -136,5 +132,8 @@ ext {
     activity = [
             activityKtx: "androidx.activity:activity-ktx:$activity_version"
     ]
+
+
+
 
 }
