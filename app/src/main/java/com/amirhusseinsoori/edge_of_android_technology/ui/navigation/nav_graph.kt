@@ -6,12 +6,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NamedNavArgument
 import com.amirhusseinsoori.edge_of_android_technology.ui.intro.IntroScreen
-import com.amirhusseinsoori.edge_of_android_technology.ui.movie.MovieScreen
+import com.amirhusseinsoori.edge_of_android_technology.ui.movies.MovieScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -95,17 +96,16 @@ fun NavGraphBuilder.addMovie(
             ) + fadeIn(animationSpec = tween(300))
         },
     ) {
-      MovieScreen()
+        MovieScreen(hiltViewModel())
     }
 }
+
 sealed class ScreenRoute(val route: String, val arguments: List<NamedNavArgument>) {
     object Intro : ScreenRoute("ScreenIntro", arguments = emptyList())
     object MovieRoute : ScreenRoute(
         route = "ScreenMovie",
         arguments = emptyList()
     )
-
-
 
 
 }
