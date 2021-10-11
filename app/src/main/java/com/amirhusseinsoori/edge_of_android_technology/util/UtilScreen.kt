@@ -21,7 +21,6 @@ import com.amirhusseinsoori.edge_of_android_technology.R
 
 @Composable
 fun Loader(anim:Int) {
-
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(composition)
     Column(
@@ -36,12 +35,6 @@ fun Loader(anim:Int) {
             progress,
         )
     }
-
-
-
-
-
-
 }
 
 
