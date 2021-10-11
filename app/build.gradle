@@ -91,10 +91,9 @@ dependencies {
 
     // ------------  hilt ------------
     implementation hilt.hilt
-    kapt  hilt.hiltKapt
+    kapt hilt.hiltKapt
     implementation hilt.hiltLifecycle
     kapt "androidx.hilt:hilt-compiler:1.0.0"
-
 
 
     // ---------------- room --------------------
@@ -117,7 +116,6 @@ dependencies {
     implementation retrofit.converterGson
 
 
-
     // ---------------------- lifecycle -----------------------------
     implementation lifecycle.viewModel
     implementation lifecycle.runtime
@@ -131,8 +129,10 @@ dependencies {
     implementation utils.timber
     implementation utils.loggingInterceptor
 
-    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
-    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    //---------------------------- chunk -----------------------------------
+    debugImplementation chuck.readystatesoftware
+    releaseImplementation chuck.readystatesoftware_no_op
 }
 
 
