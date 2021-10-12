@@ -50,6 +50,7 @@ ext {
     timber_version = '4.7.1'
     multidex_version = '2.0.1'
     loggingInterceptor_version = '4.8.1'
+    store_version = "4.0.2-KT15"
 
 
     compose = [
@@ -129,6 +130,8 @@ ext {
             timber            : "com.jakewharton.timber:timber:$timber_version",
             loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$loggingInterceptor_version",
             multidex          : "androidx.multidex:multidex:$multidex_version",
+            store : "com.dropbox.mobile.store:store4:$store_version",
+
 
     ]
 

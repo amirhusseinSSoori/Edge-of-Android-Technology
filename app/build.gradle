@@ -128,11 +128,16 @@ dependencies {
     //---------------------------- util -----------------------------------
     implementation utils.timber
     implementation utils.loggingInterceptor
+    implementation utils.store
 
 
     //---------------------------- chunk -----------------------------------
     debugImplementation chuck.readystatesoftware
     releaseImplementation chuck.readystatesoftware_no_op
+
+
+
+
 }
 
 
