@@ -1,15 +1,13 @@
 package com.amirhusseinsoori.edge_of_android_technology.ui.movies
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.amirhusseinsoori.edge_of_android_technology.model.remote.Movie
 import com.amirhusseinsoori.edge_of_android_technology.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +18,11 @@ class MoviesViewModel @Inject constructor(
 
     private val _state = MutableStateFlow<MovieState>(MovieState.None)
     val state: StateFlow<MovieState> = _state
+
+
+
+    private val _pagingState = MutableStateFlow<Flow<PagingData<Movie>>>(emptyFlow())
+    val pagingState: StateFlow<Flow<PagingData<Movie>>> = _pagingState
 
     init {
         getMovie()
@@ -36,6 +39,13 @@ class MoviesViewModel @Inject constructor(
         }
 
     }
+
+    //with paging
+    private fun getAllMovie() {
+        _pagingState.value= mMovieRepository.getAllPopularMovies().cachedIn(viewModelScope)
+    }
+
+
 }
 
 sealed class MovieState {
@@ -44,3 +54,4 @@ sealed class MovieState {
     data class Successful(val movies: List<Movie>) : MovieState()
     data class Throwable(val throwable: kotlin.Throwable) : MovieState()
 }
+
