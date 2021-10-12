@@ -8,19 +8,19 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class PagingSource @Inject constructor(var api:ApiServices) : PagingSource<Int, Movie>() {
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int?
-    {
+class MoviePagingSource @Inject constructor(var api: ApiServices) : PagingSource<Int, Movie>() {
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition
     }
-    override suspend fun load(params: LoadParams<Int>):            LoadResult<Int, Movie> {
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         return try {
             val nextPage = params.key ?: 1
-            val userList = api.getPopularMovies(page =nextPage )
+            val userList = api.getPopularMovies(page = nextPage)
             LoadResult.Page(
                 data = userList.mResults,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = if (userList.mResults.isEmpty()) null else userList.mPage + 1
+                nextKey = if (userList.mResults.isEmpty()) null else nextPage + 1
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
