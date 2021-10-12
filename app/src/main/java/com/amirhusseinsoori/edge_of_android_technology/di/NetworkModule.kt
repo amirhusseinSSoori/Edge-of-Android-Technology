@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkModule {
+object NetworkModule {
 
 
     @Provides
@@ -37,7 +37,7 @@ class NetworkModule {
         .readTimeout(60,TimeUnit.SECONDS)
         .addInterceptor(httpLoggingInterceptor).build()
 
-
+    @Singleton
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient
