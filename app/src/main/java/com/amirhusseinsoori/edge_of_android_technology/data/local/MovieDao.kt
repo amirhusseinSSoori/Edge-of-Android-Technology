@@ -1,17 +1,32 @@
 package com.amirhusseinsoori.edge_of_android_technology.data.local
 
+import android.provider.SyncStateContract.Helpers.insert
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.amirhusseinsoori.edge_of_android_technology.model.local.MoviesEntity
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-abstract class MovieDao {
+interface MovieDao {
     @Query("SELECT * FROM MoviesEntity")
-    abstract fun getMovieByPage(): Flow<List<MoviesEntity>>
+     fun getMovieByPage(): Flow<List<MoviesEntity>>
 
     @Insert
-    abstract fun insertMove(movie: MoviesEntity)
+    suspend fun insertMove(movie: MoviesEntity)
+
+    @Query("DELETE  FROM MoviesEntity")
+    suspend fun deleteAll()
+
+    @Insert
+    suspend fun insert(news: List<MoviesEntity>)
+
+
+    @Transaction
+    suspend fun update(news: List<MoviesEntity>) {
+        deleteAll()
+        insert(news)
+    }
 }

@@ -1,5 +1,6 @@
 package com.amirhusseinsoori.edge_of_android_technology.model.remote
 
+import com.amirhusseinsoori.edge_of_android_technology.model.local.MoviesEntity
 import com.google.gson.annotations.SerializedName
 
 data class Movie(
@@ -29,4 +30,21 @@ data class Movie(
     val mVoteAverage: Double,
     @SerializedName("vote_count")
     val mVoteCount: Double,
-)
+){
+    fun mapperToEntity(): MoviesEntity = MoviesEntity(
+        this.mId,
+        this.mBackdropPath,
+        this.mFirstAirDate,
+        this.mGenreIds,
+        this.mName,
+        this.mOriginCountry,
+        this.mOriginalLanguage,
+        this.mOriginal_name,
+        this.mOverview,
+        this.mPopularity,
+        this.mPosterPath,
+        this.mVoteAverage,
+        this.mVoteCount
+    )
+
+}

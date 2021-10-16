@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.amirhusseinsoori.edge_of_android_technology.data.romote.ErrorHandeling
+import com.amirhusseinsoori.edge_of_android_technology.model.local.MoviesEntity
 import com.amirhusseinsoori.edge_of_android_technology.model.remote.Movie
-import com.amirhusseinsoori.edge_of_android_technology.repository.MovieRepository
+import com.amirhusseinsoori.edge_of_android_technology.repository.MovieRepositoryImp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -13,11 +15,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val mMovieRepository: MovieRepository
+    private val mMovieRepository: MovieRepositoryImp
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<MovieState>(MovieState.None)
-    val state: StateFlow<MovieState> = _state
+    private val _state = MutableStateFlow<MovieState>(MovieState.Loading)
+    var state: StateFlow<MovieState> = _state
 
 
 
@@ -30,11 +32,8 @@ class MoviesViewModel @Inject constructor(
 
     private fun getMovie() {
         viewModelScope.launch {
-            _state.value = MovieState.Loading
-            mMovieRepository.getPopularMovies(page = 1).catch {
-                _state.value = MovieState.Throwable(it)
-            }.collect {
-                _state.value = MovieState.Successful(it.mResults)
+            mMovieRepository.getLatestNews().collect {
+                _state.value = MovieState.Successful(it)
             }
         }
 
@@ -49,9 +48,9 @@ class MoviesViewModel @Inject constructor(
 }
 
 sealed class MovieState {
-    object None : MovieState()
+
     object Loading : MovieState()
-    data class Successful(val movies: List<Movie>) : MovieState()
+    data class Successful(val movies: ErrorHandeling<List<MoviesEntity>>) : MovieState()
     data class Throwable(val throwable: kotlin.Throwable) : MovieState()
 }
 

@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiServices {
 
     @GET("tv/popular")
-    suspend fun getPopularMovies(
+     fun getPopularMovies(
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
         @Query("page") page: Int
     ): Movies
