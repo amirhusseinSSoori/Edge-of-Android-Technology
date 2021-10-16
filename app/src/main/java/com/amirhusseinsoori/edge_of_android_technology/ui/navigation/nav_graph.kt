@@ -25,8 +25,6 @@ fun InitialNavGraph(navController: NavHostController) {
     AnimatedNavHost(navController = navController, startDestination = ScreenRoute.Intro.route) {
         addIntro(navController)
         addMovie(navController)
-
-
     }
 }
 

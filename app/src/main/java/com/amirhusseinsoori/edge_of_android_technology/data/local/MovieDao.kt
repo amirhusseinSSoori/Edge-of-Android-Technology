@@ -13,5 +13,5 @@ abstract class MovieDao {
     abstract fun getMovieByPage(): Flow<List<MoviesEntity>>
 
     @Insert
-    abstract fun insertMove(movie: MoviesEntity)
+    abstract suspend  fun insertMove(movie: List<MoviesEntity>)
 }

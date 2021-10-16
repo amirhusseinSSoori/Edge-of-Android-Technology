@@ -1,6 +1,7 @@
-package com.amirhusseinsoori.edge_of_android_technology.data.romote
+package com.amirhusseinsoori.edge_of_android_technology.util
 
 import androidx.annotation.NonNull
+
 
 data class Result<T>(val status: Int, val data: T?) {
     fun isError() = status == STATUS_ERROR
