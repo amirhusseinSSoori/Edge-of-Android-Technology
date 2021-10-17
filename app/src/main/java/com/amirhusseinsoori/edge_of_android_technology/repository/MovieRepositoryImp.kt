@@ -13,6 +13,8 @@ import com.amirhusseinsoori.edge_of_android_technology.model.local.MoviesEntity
 import com.amirhusseinsoori.edge_of_android_technology.model.remote.Movie
 import com.amirhusseinsoori.edge_of_android_technology.util.DispatcherProvider
 import com.dropbox.android.external.store4.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -27,53 +29,38 @@ class MovieRepositoryImp
         emit(apiServices.getPopularMovies(page = 1))
     }
 
-    override fun getAllPopularMovies(): Flow<PagingData<Movie>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                maxSize = 100,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { MoviePagingSource(apiServices) }
-        ).flow
-     var store = StoreBuilder.from(
+
+    var store = StoreBuilder.from(
         fetcher = Fetcher.of { _: String ->
-            apiServices.getPopularMovies(page = 1)
+            apiServices.getPopularMovies(page = 40)
         },
         sourceOfTruth = SourceOfTruth.Companion.of(
-            reader = { key -> appDataBase.userDao().getMovieByPage() },
-            writer = { key: String, input: Movies ->
+            reader = { _ -> appDataBase.userDao().getMovieByPage() },
+            writer = { _: String, input: Movies ->
                 val latestNews = input.mResults
                 appDataBase.userDao().update(latestNews.map { it.mapperToEntity() })
             }
         )
     ).build()
 
-    fun getLatestNews(): Flow<ErrorHandeling<List<MoviesEntity>>> {
+
+    fun getLatestNews(): Flow<List<MoviesEntity>> {
         return flow {
             store.stream(StoreRequest.cached(key = "latest_news", refresh = true))
                 .flowOn(dispatcher.io())
                 .collect { response: StoreResponse<List<MoviesEntity>> ->
                     when (response) {
                         is StoreResponse.Loading -> {
-
-                            print("[Store 4] Loading from ${response.origin} \n")
-                            emit(ErrorHandeling.loading<List<MoviesEntity>>())
+                            emit(emptyList<MoviesEntity>())
                         }
-                        is StoreResponse.Error -> {
-                            print("[Store 4] Error from  ${response.origin}  \n")
-                            emit(ErrorHandeling.error<List<MoviesEntity>>())
-                        }
+                        is StoreResponse.Error -> { emit(emptyList<MoviesEntity>()) }
                         is StoreResponse.Data -> {
-                            val data = response.value
-                            Log.e("TAG", "getLatestNews: ${ "[Store 4] Data from ${response.origin}  with ${response.value.size} elements \n"}", )
-                            print("[Store 4] Data from ${response.origin}  with ${response.value.size} elements \n")
-                            emit(ErrorHandeling.success(data))
+                            emit(response.value)
                         }
-                        is StoreResponse.NoNewData -> emit(ErrorHandeling.success(emptyList<MoviesEntity>()))
+                        is StoreResponse.NoNewData -> emit(emptyList<MoviesEntity>())
                     }
                 }
-        }.flowOn(dispatcher.io())
+        }
     }
 
 

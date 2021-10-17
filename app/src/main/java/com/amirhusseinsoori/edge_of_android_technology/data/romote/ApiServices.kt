@@ -15,9 +15,5 @@ interface ApiServices {
     ): Movies
 
 
-    @GET("tv/popular")
-     fun getPopularMoviesWithFlow(
-        @Query("api_key") apiKey: String = BuildConfig.API_KEY,
-        @Query("page") page: Int
-    ): Flow<Movies>
+
 }

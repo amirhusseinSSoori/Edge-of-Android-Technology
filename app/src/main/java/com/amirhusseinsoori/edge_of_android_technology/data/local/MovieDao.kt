@@ -14,14 +14,11 @@ interface MovieDao {
     @Query("SELECT * FROM MoviesEntity")
      fun getMovieByPage(): Flow<List<MoviesEntity>>
 
-    @Insert
-    suspend fun insertMove(movie: MoviesEntity)
-
-    @Query("DELETE  FROM MoviesEntity")
+     @Query("DELETE  FROM MoviesEntity")
     suspend fun deleteAll()
 
     @Insert
-    suspend fun insert(news: List<MoviesEntity>)
+    suspend fun insert(movie: List<MoviesEntity>)
 
 
     @Transaction

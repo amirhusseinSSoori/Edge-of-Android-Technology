@@ -9,48 +9,43 @@ import com.amirhusseinsoori.edge_of_android_technology.model.local.MoviesEntity
 import com.amirhusseinsoori.edge_of_android_technology.model.remote.Movie
 import com.amirhusseinsoori.edge_of_android_technology.repository.MovieRepositoryImp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val mMovieRepository: MovieRepositoryImp
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<MovieState>(MovieState.Loading)
-    var state: StateFlow<MovieState> = _state
+    private val _state = MutableStateFlow<List<MoviesEntity>>(emptyList())
+    var state: StateFlow<List<MoviesEntity>> = _state
 
 
 
-    private val _pagingState = MutableStateFlow<Flow<PagingData<Movie>>>(emptyFlow())
-    val pagingState: StateFlow<Flow<PagingData<Movie>>> = _pagingState
 
     init {
         getMovie()
     }
 
+
     private fun getMovie() {
         viewModelScope.launch {
             mMovieRepository.getLatestNews().collect {
-                _state.value = MovieState.Successful(it)
+                _state.value = it
             }
+
+
+
         }
 
     }
 
-    //with paging
-    private fun getAllMovie() {
-        _pagingState.value= mMovieRepository.getAllPopularMovies().cachedIn(viewModelScope)
-    }
 
 
 }
 
-sealed class MovieState {
-
-    object Loading : MovieState()
-    data class Successful(val movies: ErrorHandeling<List<MoviesEntity>>) : MovieState()
-    data class Throwable(val throwable: kotlin.Throwable) : MovieState()
-}
 
